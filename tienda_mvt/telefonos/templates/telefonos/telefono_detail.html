@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+<!-- Titulo -->
+{% block title %} {{ telefono.marca }} {{ telefono.nombre }} {% endblock %}
+
+<!-- Contenido -->
+{% block content %}
+<div class="container py-3">
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{% url 'telefono_list' %}">Tienda de Telefonos</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ telefono.marca }} {{ telefono.nombre }}
+      </li>
+    </ol>
+  </nav>
+  <div class="card shadow-sm border-0 overflow-hidden text-start">
+    <div class="row g-0">
+      <div class="col-md-5 d-flex align-items-center justify-content-center p-4 bg-light">
+        <img
+          src="{{ telefono.imagen }}"
+          alt="{{ telefono.nombre }}"
+          class="img-fluid"
+          style="max-height: 380px; object-fit: contain"
+        />
+      </div>
+      <div class="col-md-7">
+        <div class="card-body p-4">
+          <span class="badge rounded-pill mb-2" style="background-color: #0f3460">
+            {{ telefono.marca }}
+          </span>
+          <h1 class="card-title h2">{{ telefono.nombre }}</h1>
+          <p class="display-6 fw-bold" style="color: #0f3460">$ {{ telefono.precio }}</p>
+
+          {% if telefono.stock %}
+          <p class="text-success mb-3">Disponible - {{ telefono.stock }} unidades en stock</p>
+          {% else %}
+          <p class="text-danger mb-3">Agotado</p>
+          {% endif %}
+
+          <p class="text-muted">{{ telefono.descripcion }}</p>
+
+          <h2 class="h6 text-uppercase text-muted mt-4">Especificaciones</h2>
+          <table class="table table-sm table-striped mb-4">
+            <tbody>
+              <tr>
+                <th scope="row" class="w-50">Almacenamiento</th>
+                <td>{{ telefono.almacenamiento }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Memoria RAM</th>
+                <td>{{ telefono.ram }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Color</th>
+                <td>{{ telefono.color }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-success" href="{% url 'telefono_update' telefono.id %}">Editar</a>
+            <a class="btn btn-danger" href="{% url 'telefono_delete' telefono.id %}">Eliminar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

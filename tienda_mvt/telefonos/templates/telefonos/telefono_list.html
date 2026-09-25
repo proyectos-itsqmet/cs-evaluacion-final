@@ -1,0 +1,71 @@
+{% extends "base.html" %} {% block content %}
+<div class="container-fluid text-center">
+  <h1 class="mb-4">Tienda de Telefonos</h1>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for telefono in page_obj %}
+    <div class="col">
+      <div class="card h-100 text-center shadow-sm">
+        <img
+          src="{{ telefono.imagen }}"
+          class="card-img-top p-3"
+          alt="{{ telefono.nombre }}"
+          style="height: 200px; object-fit: contain"
+        />
+        <div class="card-body d-flex flex-column justify-content-between">
+          <h5 class="card-title">{{ telefono.nombre }}</h5>
+          <p class="card-text text-muted text-truncate">
+            {{ telefono.descripcion }}
+          </p>
+          <p class="card-text">
+            <small class="text-muted">{{ telefono.marca }}</small>
+          </p>
+          <p class="card-text fw-bold">$ {{ telefono.precio }}</p>
+          <a
+            class="btn text-white"
+            style="background-color: #0f3460"
+            href="{% url 'telefono_detail' telefono.id %}"
+            >Ver detalles</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <nav aria-label="Paginacion de telefonos" class="mt-4">
+    <ul class="pagination justify-content-center flex-wrap">
+      <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+        {% if page_obj.has_previous %}
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+        {% else %}
+        <span class="page-link" aria-hidden="true">&laquo;</span>
+        {% endif %}
+      </li>
+      {% for num in page_obj.paginator.page_range %}
+      <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+        {% if num == page_obj.number %}
+        <span class="page-link" style="background-color: #0f3460; border-color: #0f3460">{{ num }}</span>
+        {% else %}
+        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      </li>
+      {% endfor %}
+      <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+        {% if page_obj.has_next %}
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+        {% else %}
+        <span class="page-link" aria-hidden="true">&raquo;</span>
+        {% endif %}
+      </li>
+    </ul>
+    <p class="text-center text-muted">
+      Pagina {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+      - {{ page_obj.paginator.count }} telefonos en total
+    </p>
+  </nav>
+</div>
+{% endblock %}
